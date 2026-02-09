@@ -3,7 +3,7 @@ package daysteps
 import (
 	"errors"
 	"fmt"
-	"go-first-floor-sprint-five/internal/spentcalories"
+	"github.com/Yandex-Practicum/tracker/internal/spentcalories"
 	"strconv"
 	"strings"
 	"time"
@@ -20,7 +20,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 	// TODO: реализовать функцию
 	SplittedData := strings.Split(data, ",")
 	if len(SplittedData) != 2 {
-		return 0, 0, errors.New("Не хватает элементов в слайсе")
+		return 0, 0, errors.New("не хватает элементов в слайсе" + "\n")
 	}
 
 	Steps, err := strconv.Atoi(SplittedData[0])
@@ -28,23 +28,23 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, err
 	}
 	if Steps == 0 {
-		return 0, 0, errors.New("Количество шагов равно 0")
+		return 0, 0, errors.New("количество шагов равно 0" + "\n")
 	}
 
-	WalkTime, err := time.ParseDuration(SplittedData[1])
+	Duration, err := time.ParseDuration(SplittedData[1])
 	if err != nil {
 		return 0, 0, err
 	}
-	if WalkTime == 0 {
-		return 0, 0, errors.New("Время равно 0")
+	if Duration == 0 {
+		return 0, 0, errors.New("время равно 0" + "\n")
 	}
 
-	return Steps, WalkTime, nil
+	return Steps, Duration, nil
 }
 
 func DayActionInfo(data string, weight, height float64) string {
 	// TODO: реализовать функцию
-	Steps, WalkTime, err := parsePackage(data)
+	Steps, Duration, err := parsePackage(data)
 	if err != nil {
 		fmt.Println(err)
 		return ""
@@ -55,7 +55,13 @@ func DayActionInfo(data string, weight, height float64) string {
 
 	var Distance float64 = (float64(Steps) * stepLength) / float64(mInKm)
 
-	Calories := WalkingSpentCalories(weight, height, WalkTime)
+	Calories, err := spentcalories.WalkingSpentCalories(Steps, weight, height, Duration)
 
-	return fmt.Sprintf("Количество шагов: %d.\nДистанция составила %2.f км.\nВы сожгли %2.f ккал.\r", Steps, Distance, Calories)
+	if err != nil {
+		return ""
+	}
+
+	return fmt.Sprintf(`Количество шагов: %d.
+Дистанция составила %.2f км.
+Вы сожгли %.2f ккал.`+"\n", Steps, Distance, Calories)
 }
