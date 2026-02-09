@@ -20,7 +20,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 	// TODO: реализовать функцию
 	SplittedData := strings.Split(data, ",")
 	if len(SplittedData) != 2 {
-		return 0, 0, errors.New("не хватает элементов в слайсе" + "\n")
+		return 0, 0, errors.New("не хватает элементов в слайсе")
 	}
 
 	Steps, err := strconv.Atoi(SplittedData[0])
@@ -28,7 +28,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, err
 	}
 	if Steps == 0 {
-		return 0, 0, errors.New("количество шагов равно 0" + "\n")
+		return 0, 0, errors.New("количество шагов равно 0")
 	}
 
 	Duration, err := time.ParseDuration(SplittedData[1])
@@ -36,7 +36,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, err
 	}
 	if Duration == 0 {
-		return 0, 0, errors.New("время равно 0" + "\n")
+		return 0, 0, errors.New("время равно 0")
 	}
 
 	return Steps, Duration, nil

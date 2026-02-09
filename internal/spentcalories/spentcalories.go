@@ -22,7 +22,7 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	// TODO: реализовать функцию
 	SplittedData := strings.Split(data, ",")
 	if len(SplittedData) != 3 {
-		return 0, "", 0, errors.New("не хватает элементов в слайсе" + "\n")
+		return 0, "", 0, errors.New("не хватает элементов в слайсе")
 	}
 
 	Steps, err := strconv.Atoi(SplittedData[0])
@@ -30,7 +30,7 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 		return 0, "", 0, err
 	}
 	if Steps == 0 {
-		return 0, "", 0, errors.New("количество шагов равно 0" + "\n")
+		return 0, "", 0, errors.New("количество шагов равно 0")
 	}
 
 	ActivityType := SplittedData[1]
@@ -40,7 +40,7 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 		return 0, "", 0, err
 	}
 	if Duration == 0 {
-		return 0, "", 0, errors.New("время равно 0" + "\n")
+		return 0, "", 0, errors.New("время равно 0")
 	}
 
 	return Steps, ActivityType, Duration, nil
@@ -84,7 +84,7 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 Длительность: %v ч.
 Дистанция: %.2f км.
 Скорость: %.2f км/ч.
-Сожгли калорий: %2.f`+"\n", ActivityType, Duration.Hours(), Distance, AverageSpeed, Calories)
+Сожгли калорий: %.2f`+"\n", ActivityType, Duration.Hours(), Distance, AverageSpeed, Calories)
 
 		return resultWalk, nil
 
@@ -108,18 +108,18 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 		return resultRun, nil
 
 	default:
-		return "", errors.New("неизвестный тип тренировки" + "\n")
+		return "", errors.New("неизвестный тип тренировки")
 	}
 }
 
 func RunningSpentCalories(steps int, weight, height float64, Duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
 	if steps == 0 {
-		return 0, errors.New("количество шагов равно 0" + "\n")
+		return 0, errors.New("количество шагов равно 0")
 	}
 
 	if Duration <= 0 {
-		return 0, errors.New("время равно 0" + "\n")
+		return 0, errors.New("время равно 0")
 	}
 
 	return (weight * meanSpeed(steps, height, Duration) * Duration.Minutes()) / minInH, nil
@@ -129,11 +129,11 @@ func RunningSpentCalories(steps int, weight, height float64, Duration time.Durat
 func WalkingSpentCalories(steps int, weight, height float64, Duration time.Duration) (float64, error) {
 	// TODO: реализовать функцию
 	if steps == 0 {
-		return 0, errors.New("количество шагов равно 0" + "\n")
+		return 0, errors.New("количество шагов равно 0")
 	}
 
 	if Duration <= 0 {
-		return 0, errors.New("время равно 0" + "\n")
+		return 0, errors.New("время равно 0")
 	}
 
 	calories := (weight * meanSpeed(steps, height, Duration) * Duration.Minutes()) / minInH
