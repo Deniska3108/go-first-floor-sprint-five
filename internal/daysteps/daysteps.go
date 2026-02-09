@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Yandex-Practicum/tracker/internal/spentcalories"
+	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -27,16 +28,16 @@ func parsePackage(data string) (int, time.Duration, error) {
 	if err != nil {
 		return 0, 0, err
 	}
-	if Steps == 0 {
-		return 0, 0, errors.New("количество шагов равно 0")
+	if Steps <= 0 {
+		return 0, 0, errors.New("количество шагов меньше или равно 0")
 	}
 
 	Duration, err := time.ParseDuration(SplittedData[1])
 	if err != nil {
 		return 0, 0, err
 	}
-	if Duration == 0 {
-		return 0, 0, errors.New("время равно 0")
+	if Duration <= 0 {
+		return 0, 0, errors.New("время меньше или равно 0")
 	}
 
 	return Steps, Duration, nil
@@ -46,10 +47,10 @@ func DayActionInfo(data string, weight, height float64) string {
 	// TODO: реализовать функцию
 	Steps, Duration, err := parsePackage(data)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return ""
 	}
-	if Steps == 0 {
+	if Steps <= 0 {
 		return ""
 	}
 
@@ -58,6 +59,7 @@ func DayActionInfo(data string, weight, height float64) string {
 	Calories, err := spentcalories.WalkingSpentCalories(Steps, weight, height, Duration)
 
 	if err != nil {
+		log.Println(err)
 		return ""
 	}
 
